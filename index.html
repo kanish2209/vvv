@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>L'Horloger 1888 — Master Vintage Chronometer</title>
+  <meta name="description" content="An exquisite vintage analog chronometer featuring accurate horological timing, mechanical escapement simulation, day/night celestial sub-dial, open-heart tourbillon, and procedural tick-tock acoustics.">
+  <meta name="theme-color" content="#120e0a">
+
+  <!-- Google Fonts: Elegant Horological Serif & Display Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="brass">
+  <!-- Subtle ambient noise & vignette texture overlay -->
+  <div class="ambient-vignette" aria-hidden="true"></div>
+  <div class="light-gleam" id="lightGleam" aria-hidden="true"></div>
+
+  <!-- Header & Brand Bar -->
+  <header class="horology-header">
+    <div class="header-inner">
+      <div class="vintage-crest">
+        <svg class="crest-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 3v3M12 18v3M3 12h3M18 12h3"/>
+          <path d="M12 12l3-3M12 12l-2 4"/>
+          <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+        </svg>
+        <span class="crest-title">L'HORLOGER DE GENÈVE</span>
+        <span class="crest-subtitle">FONDATEUR 1888 • OBSERVATOIRE ASTRONOMIQUE</span>
+      </div>
+
+      <!-- Quick Action Badges -->
+      <div class="header-badges">
+        <div class="status-badge" id="syncStatusBadge" title="Atomic Precision Clock Engine Active">
+          <span class="pulse-indicator"></span>
+          <span class="badge-text" id="syncStatusText">SYNC: HIGH PRECISION</span>
+        </div>
+        <button class="icon-btn" id="btnAudioToggle" title="Toggle Mechanical Escapement Sound" aria-label="Toggle Mechanical Sound">
+          <svg id="audioIconOn" class="btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <svg id="audioIconOff" class="btn-svg hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+          <span class="btn-label" id="soundBtnLabel">SOUND: ON</span>
+        </button>
+        <button class="icon-btn" id="btnFullscreen" title="Toggle Fullscreen Display" aria-label="Fullscreen">
+          <svg class="btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Showcase Container -->
+  <main class="horology-stage">
+    <!-- Clock Assembly Wrapper with 3D tilt tracking -->
+    <div class="clock-stage-viewport" id="clockViewport">
+      
+      <!-- Antique Pocket Watch Top Winding Loop / Bow -->
+      <div class="watch-top-crown-assembly" id="crownAssembly" title="Click to Wind Mechanical Spring">
+        <div class="watch-bow-loop"></div>
+        <div class="watch-winding-crown" id="windingCrown">
+          <div class="crown-fluting"></div>
+          <div class="crown-jewel"></div>
+        </div>
+      </div>
+
+      <!-- The Master Clock Instrument Housing -->
+      <div class="clock-casing" id="clockCasing">
+        <!-- Layer 1: Outer Stepped Brass Bezel with Screws & Knurling -->
+        <div class="bezel-outer-rim">
+          <div class="bezel-screw b-top" aria-hidden="true"></div>
+          <div class="bezel-screw b-right" aria-hidden="true"></div>
+          <div class="bezel-screw b-bottom" aria-hidden="true"></div>
+          <div class="bezel-screw b-left" aria-hidden="true"></div>
+        </div>
+
+        <div class="bezel-inner-flange"></div>
+
+        <!-- Layer 2: Dial Faceplate -->
+        <div class="clock-dial" id="clockDial">
+          <!-- Canvas for high-precision procedural Guilloché background -->
+          <canvas id="guillocheCanvas" class="dial-guilloche-canvas" width="800" height="800"></canvas>
+
+          <!-- SVG Layer for Horological Track, Numerals & Complications -->
+          <svg id="clockDialSvg" class="dial-svg" viewBox="0 0 600 600" width="100%" height="100%">
+            <defs>
+              <!-- Metallic Gradients -->
+              <radialGradient id="dialParchmentGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="var(--dial-center)"/>
+                <stop offset="65%" stop-color="var(--dial-mid)"/>
+                <stop offset="92%" stop-color="var(--dial-edge)"/>
+                <stop offset="100%" stop-color="var(--dial-border)"/>
+              </radialGradient>
+
+              <linearGradient id="goldMetallicGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fff5cc"/>
+                <stop offset="25%" stop-color="#e2b962"/>
+                <stop offset="50%" stop-color="#9a7126"/>
+                <stop offset="75%" stop-color="#f5d688"/>
+                <stop offset="100%" stop-color="#694b12"/>
+              </linearGradient>
+
+              <linearGradient id="bluedSteelGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#14223d"/>
+                <stop offset="40%" stop-color="#244882"/>
+                <stop offset="65%" stop-color="#3c6ebb"/>
+                <stop offset="90%" stop-color="#1b2f52"/>
+                <stop offset="100%" stop-color="#0f1a2c"/>
+              </linearGradient>
+
+              <linearGradient id="rubyGleam" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff6b8b"/>
+                <stop offset="50%" stop-color="#c41235"/>
+                <stop offset="100%" stop-color="#6e051a"/>
+              </linearGradient>
+
+              <!-- Shadows for hands & 3D bevels -->
+              <filter id="handShadow" x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow dx="3" dy="6" stdDeviation="4" flood-color="rgba(10, 5, 2, 0.65)"/>
+              </filter>
+              <filter id="secondHandShadow" x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow dx="2" dy="5" stdDeviation="2.5" flood-color="rgba(10, 5, 2, 0.5)"/>
+              </filter>
+              <filter id="recessedShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0, 0, 0, 0.4)"/>
+              </filter>
+            </defs>
+
+            <!-- Outer Railway Minute Track (Chemin de fer) -->
+            <circle cx="300" cy="300" r="274" fill="none" stroke="var(--ink-color)" stroke-width="1.8" opacity="0.8"/>
+            <circle cx="300" cy="300" r="256" fill="none" stroke="var(--ink-color)" stroke-width="1.2" opacity="0.75"/>
+            <circle cx="300" cy="300" r="253" fill="none" stroke="var(--ink-color)" stroke-width="0.7" opacity="0.5"/>
+
+            <!-- Procedural Minute/Seconds & Hour Ticks will be placed here -->
+            <g id="dialTickGroup" class="dial-ticks"></g>
+
+            <!-- Roman Numerals Chapter Ring -->
+            <g id="dialNumeralsGroup" class="dial-numerals"></g>
+
+            <!-- Vintage Inscriptions & Brand Heritage -->
+            <g class="dial-inscriptions" text-anchor="middle">
+              <text x="300" y="210" class="brand-title">L'HORLOGER</text>
+              <text x="300" y="224" class="brand-sub">CHRONOMÈTRE D'OBSERVATOIRE</text>
+              <text x="300" y="235" class="brand-origin">GENÈVE • 1888</text>
+              <text x="300" y="475" class="brand-guarantee">ÉCHAPPEMENT ANCRE • 31 RUBIS</text>
+              <text x="300" y="488" class="brand-precision">HAUTE PRÉCISION CHRONOMÉTRIQUE</text>
+            </g>
+
+            <!-- Sub-Dial 1: 24-Hour Day/Night Celestial Complication (at 12 o'clock, cx=300, cy=145) -->
+            <g class="complication celestial-dial" id="celestialDialGroup" transform="translate(300, 145)">
+              <circle cx="0" cy="0" r="46" fill="url(#recessedShadow)" class="subdial-bg"/>
+              <circle cx="0" cy="0" r="46" fill="#131e2b" stroke="var(--brass-border)" stroke-width="2"/>
+              <!-- Celestial Disc Rotates according to 24h solar time -->
+              <g id="celestialDisc" class="celestial-disc">
+                <!-- Day side with Radiant Golden Sun -->
+                <circle cx="0" cy="-26" r="11" fill="url(#goldMetallicGrad)"/>
+                <g stroke="#f5d688" stroke-width="1.5">
+                  <line x1="0" y1="-41" x2="0" y2="-37"/>
+                  <line x1="11" y1="-37" x2="8" y2="-34"/>
+                  <line x1="15" y1="-26" x2="11" y2="-26"/>
+                  <line x1="11" y1="-15" x2="8" y2="-18"/>
+                  <line x1="-11" y1="-37" x2="-8" y2="-34"/>
+                  <line x1="-15" y1="-26" x2="-11" y2="-26"/>
+                  <line x1="-11" y1="-15" x2="-8" y2="-18"/>
+                </g>
+                <!-- Night side with Silver Crescent Moon and Stars -->
+                <path d="M 0,20 A 10,10 0 0,0 12,32 A 13,13 0 1,1 0,20 Z" fill="#e6f0fa"/>
+                <circle cx="-16" cy="24" r="1.2" fill="#fff"/>
+                <circle cx="-9" cy="35" r="1" fill="#fff"/>
+                <circle cx="16" cy="22" r="1.2" fill="#fff"/>
+                <circle cx="12" cy="15" r="0.9" fill="#fff"/>
+              </g>
+              <!-- Aperture mask ring -->
+              <circle cx="0" cy="0" r="46" fill="none" stroke="var(--ink-color)" stroke-width="1.2" opacity="0.6"/>
+              <path d="M -46,0 A 46,46 0 0,0 46,0 Z" fill="var(--dial-center)" opacity="0.95" stroke="var(--brass-border)" stroke-width="1.5"/>
+              <text x="0" y="-3" class="subdial-label" text-anchor="middle">24 HEURES</text>
+              <text x="-32" y="10" class="subdial-label micro" text-anchor="middle">6H</text>
+              <text x="0" y="14" class="subdial-label micro" text-anchor="middle">12H</text>
+              <text x="32" y="10" class="subdial-label micro" text-anchor="middle">18H</text>
+            </g>
+
+            <!-- Sub-Dial 2: Power Reserve / Remontoir Complication (at 9 o'clock, cx=170, cy=300) -->
+            <g class="complication power-reserve-dial" id="powerReserveGroup" transform="translate(170, 300)">
+              <circle cx="0" cy="0" r="38" fill="var(--subdial-bg)" stroke="var(--brass-border)" stroke-width="1.5"/>
+              <path d="M -26,12 A 30,30 0 0,1 26,12" fill="none" stroke="var(--ink-color)" stroke-width="2" stroke-dasharray="2,3"/>
+              <text x="0" y="-12" class="subdial-label micro" text-anchor="middle">RÉSERVE</text>
+              <text x="-18" y="24" class="subdial-label tiny" text-anchor="middle">BAS</text>
+              <text x="18" y="24" class="subdial-label tiny" text-anchor="middle">HAUT</text>
+              <!-- Power Reserve Hand -->
+              <line id="powerReserveHand" x1="0" y1="0" x2="0" y2="-22" stroke="var(--steel-hand)" stroke-width="1.8" stroke-linecap="round"/>
+              <circle cx="0" cy="0" r="3" fill="url(#rubyGleam)"/>
+            </g>
+
+            <!-- Sub-Dial 3: Calendar Date Aperture (at 3 o'clock, cx=430, cy=300) -->
+            <g class="complication date-aperture" id="dateApertureGroup" transform="translate(430, 300)">
+              <!-- Beveled Metallic Frame -->
+              <rect x="-30" y="-18" width="60" height="36" rx="4" fill="var(--brass-bevel)" stroke="var(--brass-border)" stroke-width="2"/>
+              <rect x="-26" y="-14" width="52" height="28" rx="2" fill="var(--parchment-deep)" stroke="#2b1c10" stroke-width="1.2"/>
+              <text x="0" y="6" id="dateApertureText" class="date-text" text-anchor="middle">27</text>
+              <text x="0" y="-22" class="subdial-label micro" text-anchor="middle">DATE</text>
+            </g>
+
+            <!-- Sub-Dial 4: Open Heart / Tourbillon Skeleton Window (at 6 o'clock, cx=300, cy=400) -->
+            <g class="complication tourbillon-aperture" id="tourbillonGroup" transform="translate(300, 395)">
+              <circle cx="0" cy="0" r="48" fill="#18130e" stroke="var(--brass-border)" stroke-width="2.5"/>
+              <circle cx="0" cy="0" r="45" fill="none" stroke="#3d2a17" stroke-width="1.5"/>
+              
+              <!-- Exposed Skeleton Gears & Escape Wheel -->
+              <g id="skeletonGears" class="skeleton-gears">
+                <!-- Fixed bridge & jewels -->
+                <path d="M -44,0 L 44,0" stroke="#7a5528" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="-25" cy="0" r="4" fill="url(#rubyGleam)" stroke="#52131e" stroke-width="1"/>
+                <circle cx="25" cy="0" r="4" fill="url(#rubyGleam)" stroke="#52131e" stroke-width="1"/>
+                
+                <!-- Oscillating Balance Wheel with authentic screws -->
+                <g id="oscillatingBalanceWheel" class="balance-wheel">
+                  <circle cx="0" cy="0" r="34" fill="none" stroke="url(#goldMetallicGrad)" stroke-width="2.5"/>
+                  <line x1="-34" y1="0" x2="34" y2="0" stroke="url(#goldMetallicGrad)" stroke-width="2"/>
+                  <line x1="0" y1="-34" x2="0" y2="34" stroke="url(#goldMetallicGrad)" stroke-width="2"/>
+                  <!-- Balance wheel rim compensation screws -->
+                  <circle cx="-34" cy="0" r="2.2" fill="#e8c374"/>
+                  <circle cx="34" cy="0" r="2.2" fill="#e8c374"/>
+                  <circle cx="0" cy="-34" r="2.2" fill="#e8c374"/>
+                  <circle cx="0" cy="34" r="2.2" fill="#e8c374"/>
+                  <circle cx="-24" cy="-24" r="2.2" fill="#e8c374"/>
+                  <circle cx="24" cy="24" r="2.2" fill="#e8c374"/>
+                  <circle cx="-24" cy="24" r="2.2" fill="#e8c374"/>
+                  <circle cx="24" cy="-24" r="2.2" fill="#e8c374"/>
+
+                  <!-- Coiled Hairspring (spiral) -->
+                  <path id="hairspringSpiral" class="hairspring" fill="none" stroke="#4872ab" stroke-width="1.2" opacity="0.85"/>
+                </g>
+
+                <!-- Center Ruby Bearing Pivot -->
+                <circle cx="0" cy="0" r="7" fill="url(#goldMetallicGrad)" stroke="#4e3314" stroke-width="1.5"/>
+                <circle cx="0" cy="0" r="4" fill="url(#rubyGleam)"/>
+              </g>
+
+              <!-- Subtle Seconds ticks around tourbillon -->
+              <circle cx="0" cy="0" r="47" fill="none" stroke="var(--ink-color)" stroke-width="1" stroke-dasharray="1.5, 4.2"/>
+              <text x="0" y="58" class="subdial-label micro" text-anchor="middle">ÉCHAPPEMENT</text>
+            </g>
+
+            <!-- THE MASTER HANDS ASSEMBLY (Shadows + Physical Hands) -->
+            <!-- Hour Hand -->
+            <g id="hourHandGroup" class="hand-group" filter="url(#handShadow)">
+              <!-- Breguet "Pomme" Hour Hand -->
+              <path class="hand-hour" d="
+                M 0,22 
+                L 4,14 
+                L 2.5,-100 
+                A 12,12 0 1,0 -2.5,-100 
+                L -4,14 
+                Z" 
+                fill="var(--steel-hand)"
+              />
+              <!-- Breguet eccentric moon cutout -->
+              <circle cx="0" cy="-100" r="7" fill="var(--dial-center)"/>
+              <circle cx="0" cy="-100" r="6" fill="var(--steel-hand)" opacity="0.2"/>
+              <!-- Counterweight pear -->
+              <circle cx="0" cy="20" r="6" fill="var(--steel-hand)"/>
+            </g>
+
+            <!-- Minute Hand -->
+            <g id="minuteHandGroup" class="hand-group" filter="url(#handShadow)">
+              <!-- Elongated Breguet Minute Hand reaching outer minute track -->
+              <path class="hand-minute" d="
+                M 0,28 
+                L 3.5,18 
+                L 1.8,-195 
+                A 10,10 0 1,0 -1.8,-195 
+                L -3.5,18 
+                Z" 
+                fill="var(--steel-hand)"
+              />
+              <!-- Minute moon cutout -->
+              <circle cx="0" cy="-195" r="5.5" fill="var(--dial-center)"/>
+              <circle cx="0" cy="-195" r="4.5" fill="var(--steel-hand)" opacity="0.2"/>
+              <circle cx="0" cy="24" r="5" fill="var(--steel-hand)"/>
+            </g>
+
+            <!-- Sweep Second Hand -->
+            <g id="secondHandGroup" class="hand-group second-hand-group" filter="url(#secondHandShadow)">
+              <!-- Razor-thin needle hand with crescent counter-balance -->
+              <line x1="0" y1="52" x2="0" y2="-245" stroke="var(--second-hand-color)" stroke-width="1.8" stroke-linecap="round"/>
+              <!-- Counter-weight crescent moon & decorative tail -->
+              <path d="M 0,38 A 12,12 0 1,0 0,58 A 16,16 0 0,1 0,38 Z" fill="var(--second-hand-color)"/>
+              <!-- Slender tip finial -->
+              <polygon points="0,-248 -2,-238 2,-238" fill="var(--second-hand-color)"/>
+              <!-- Central red / brass collar -->
+              <circle cx="0" cy="0" r="4" fill="var(--second-hand-color)"/>
+            </g>
+
+            <!-- Central Canon Pinion & Cap Jewel (Fixed on top of all hands) -->
+            <g class="hand-cap-assembly">
+              <circle cx="300" cy="300" r="10" fill="url(#goldMetallicGrad)" stroke="#3f2710" stroke-width="1.5" filter="url(#recessedShadow)"/>
+              <circle cx="300" cy="300" r="5.5" fill="url(#rubyGleam)"/>
+              <circle cx="298" cy="298" r="1.5" fill="#fff" opacity="0.7"/>
+            </g>
+          </svg>
+
+          <!-- Layer 3: Domed Sapphire Crystal Glass Highlights & Reflections -->
+          <div class="glass-lens" id="glassLens" aria-hidden="true">
+            <div class="glass-reflection-rim"></div>
+            <div class="glass-glare-sweep"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Antique Brass Plaque & Verification Dashboard -->
+    <section class="horology-dashboard" aria-label="Horological Controls and Precision Readout">
+      <!-- Engraved Brass Information Plate -->
+      <div class="brass-plaque">
+        <div class="plaque-rivet p-tl"></div>
+        <div class="plaque-rivet p-tr"></div>
+        <div class="plaque-rivet p-bl"></div>
+        <div class="plaque-rivet p-br"></div>
+
+        <div class="plaque-content">
+          <div class="plaque-header">
+            <span class="plaque-line"></span>
+            <span class="plaque-title">CHRONOMÈTRE OFFICIEL D'ASTRONOMIE</span>
+            <span class="plaque-line"></span>
+          </div>
+
+          <!-- Live Digital Atomic Time Verification Readout -->
+          <div class="digital-verification">
+            <div class="time-readout-wrap">
+              <span class="time-main" id="digitalTimeDisplay">12:00:00</span>
+              <span class="time-millis" id="digitalMillisDisplay">.000</span>
+              <span class="time-ampm" id="digitalAmPm">PM</span>
+            </div>
+            <div class="date-readout-wrap" id="digitalFullDate">
+              SATURDAY • 27 SEPTEMBER 2026
+            </div>
+          </div>
+
+          <!-- Precision Telemetry Grid -->
+          <div class="telemetry-grid">
+            <div class="telemetry-item">
+              <span class="tele-label">TIMEZONE</span>
+              <span class="tele-val" id="teleTimezone">LOCAL (GMT+05:30)</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="tele-label">ESCAPEMENT</span>
+              <span class="tele-val" id="teleFrequency">18,000 VPH (2.5 Hz)</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="tele-label">TIME DRIFT</span>
+              <span class="tele-val" id="teleDrift">&plusmn;0.00 ms</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="tele-label">SOLAR STATUS</span>
+              <span class="tele-val" id="teleSolar">DAYLIGHT (ZENITH)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Master Control Console -->
+      <div class="control-console">
+        <!-- Escapement Step Mode -->
+        <div class="control-group">
+          <label class="control-label" for="motionModeSelect">
+            <span class="label-title">ESCAPEMENT MOTION</span>
+            <span class="label-desc">Mechanical Beat Mechanics</span>
+          </label>
+          <div class="custom-select-wrap">
+            <select id="motionModeSelect" class="vintage-select">
+              <option value="mechanical" selected>Pocket Watch Beat (5 Beats / Sec)</option>
+              <option value="deadbeat">Grandfather Deadbeat (1 Sec Jump)</option>
+              <option value="sweep">Master Smooth Sweep (60 FPS Fluid)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- City & Meridian Timezone -->
+        <div class="control-group">
+          <label class="control-label" for="timezoneSelect">
+            <span class="label-title">MERIDIAN OBSERVATORY</span>
+            <span class="label-desc">International Standard Reference</span>
+          </label>
+          <div class="custom-select-wrap">
+            <select id="timezoneSelect" class="vintage-select">
+              <option value="local" selected>Local Device Time</option>
+              <option value="Europe/London">London (Greenwich Mean Time)</option>
+              <option value="Europe/Paris">Geneva &amp; Paris (Central European)</option>
+              <option value="America/New_York">New York (Eastern Standard)</option>
+              <option value="Asia/Tokyo">Tokyo (Japan Standard Time)</option>
+              <option value="Asia/Kolkata">Kolkata (Indian Standard Time)</option>
+              <option value="Australia/Sydney">Sydney (Australian Eastern)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Dial Theme Casing Finish -->
+        <div class="control-group">
+          <label class="control-label">
+            <span class="label-title">HOROLOGICAL FINISH</span>
+            <span class="label-desc">Master Artisan Casing</span>
+          </label>
+          <div class="theme-button-group" role="radiogroup" aria-label="Horological Finish">
+            <button class="theme-btn active" data-theme="brass" title="Imperial Brass &amp; Aged Parchment">
+              <span class="theme-dot brass-dot"></span> Brass
+            </button>
+            <button class="theme-btn" data-theme="obsidian" title="Midnight Obsidian &amp; Rose Gold">
+              <span class="theme-dot obsidian-dot"></span> Obsidian
+            </button>
+            <button class="theme-btn" data-theme="walnut" title="Victorian Walnut &amp; Gilt Enamel">
+              <span class="theme-dot walnut-dot"></span> Walnut
+            </button>
+            <button class="theme-btn" data-theme="patina" title="Antiquated Marine Verdigris Bronze">
+              <span class="theme-dot patina-dot"></span> Verdigris
+            </button>
+          </div>
+        </div>
+
+        <!-- Audio Tuning & Chimes -->
+        <div class="control-group">
+          <label class="control-label">
+            <span class="label-title">ACOUSTIC CHAMBER</span>
+            <span class="label-desc">Escapement Ticking &amp; Chime Strike</span>
+          </label>
+          <div class="acoustic-controls">
+            <div class="slider-row">
+              <span class="slider-name">TICK VOLUME</span>
+              <input type="range" id="volumeSlider" min="0" max="100" value="45" class="vintage-slider" aria-label="Volume Slider">
+              <span class="slider-val" id="volumeVal">45%</span>
+            </div>
+            <div class="toggle-row">
+              <label class="vintage-checkbox-label">
+                <input type="checkbox" id="chkHourlyChime" checked>
+                <span class="custom-checkbox"></span>
+                <span class="checkbox-text">Hourly Bell Strike (Westminster Resonance)</span>
+              </label>
+              <button class="chime-test-btn" id="btnTestChime" title="Preview Bronze Bell Strike">
+                Test Bell
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Manual Winding & Chronometer Test Actions -->
+        <div class="control-actions">
+          <button class="action-btn primary" id="btnWindClock" title="Wind the mechanical mainspring barrel">
+            <svg class="action-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            </svg>
+            <span>WIND MAINSPRING</span>
+          </button>
+          <button class="action-btn secondary" id="btnStopwatchMode" title="Toggle Chronograph / Stopwatch complication">
+            <svg class="action-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="14" r="8"/>
+              <path d="M12 2v4M10 2h4M12 14l3-3"/>
+            </svg>
+            <span id="chronoBtnLabel">START CHRONO</span>
+          </button>
+          <button class="action-btn tertiary" id="btnSyncAtomic" title="Re-calibrate to exact atomic system clock">
+            <svg class="action-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+            <span>VERIFY SYNC</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer with horological specifications -->
+  <footer class="horology-footer">
+    <div class="footer-inner">
+      <p class="specs-text">
+        CALIBRE 1888-A • 31 JEWELS • BREGUET OVERCOIL BALANCE SPRING • 18,000 VIBRATIONS PER HOUR • OBSERVATOIRE DE GENÈVE SPECIFICATION
+      </p>
+      <p class="copyright-text">
+        Crafted with precision SVG &amp; Web Audio API • Accurate to &plusmn;1 millisecond of system reference time
+      </p>
+    </div>
+  </footer>
+
+  <script src="clock.js"></script>
+</body>
+</html>

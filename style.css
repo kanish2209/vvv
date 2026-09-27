@@ -1,0 +1,1187 @@
+/* ==========================================================================
+   L'HORLOGER 1888 — VINTAGE MASTER CHRONOMETER STYLESHEET
+   Design Philosophy: Rich Antique Horology, Brass & Blued Steel, Guilloché,
+   Domed Sapphire Crystal, and Precision Tactile Controls.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Design Tokens & Themes
+   -------------------------------------------------------------------------- */
+:root {
+  /* Default: Imperial Brass & Antique Parchment */
+  --bg-primary: #0e0a07;
+  --bg-radial: radial-gradient(circle at 50% 35%, #2a1b12 0%, #130c08 55%, #070403 100%);
+  --wood-grain: #1a0f0a;
+
+  /* Casing & Bezel */
+  --casing-outer: linear-gradient(135deg, #443019 0%, #a77c38 25%, #422d15 50%, #d8ae5e 75%, #35210d 100%);
+  --casing-bevel: linear-gradient(135deg, #e3ba68 0%, #68491c 40%, #ffd47a 70%, #462c0e 100%);
+  --casing-shadow: 0 35px 80px rgba(0, 0, 0, 0.85), 0 15px 30px rgba(0, 0, 0, 0.65), inset 0 2px 5px rgba(255, 230, 160, 0.3);
+  --screw-head: linear-gradient(135deg, #ffd984 0%, #6d4a1b 100%);
+  
+  /* Dial Colors */
+  --dial-center: #f7edd7;
+  --dial-mid: #eee0bf;
+  --dial-edge: #d8c298;
+  --dial-border: #b19361;
+  --parchment-deep: #e5d3ab;
+  --subdial-bg: rgba(235, 219, 185, 0.9);
+  --guilloche-color: rgba(145, 108, 62, 0.12);
+
+  /* Horological Inks & Hands */
+  --ink-color: #21160d;
+  --ink-faded: #5a422d;
+  --steel-hand: #192a4a;
+  --steel-hand-highlight: #3b6099;
+  --second-hand-color: #a72323;
+  --brass-border: #876228;
+  --brass-bevel: #b88b3f;
+  --ruby-color: #bd1438;
+
+  /* Dashboard & Brass Plaque */
+  --plaque-bg: linear-gradient(145deg, #4a3319 0%, #876127 30%, #3e2812 60%, #a27a3a 100%);
+  --plaque-border: #c4994f;
+  --plaque-text: #f9eacc;
+  --card-bg: rgba(22, 14, 9, 0.85);
+  --card-border: rgba(175, 131, 62, 0.35);
+  --accent-gold: #e2b763;
+  --accent-glow: rgba(226, 183, 99, 0.25);
+  --text-main: #eeddc2;
+  --text-muted: #9e8467;
+
+  /* Typography */
+  --font-serif: 'Cinzel', serif;
+  --font-display: 'Cinzel Decorative', serif;
+  --font-body: 'Cormorant Garamond', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --transition-smooth: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Theme 2: Midnight Obsidian & Rose Gold */
+[data-theme="obsidian"] {
+  --bg-primary: #06070a;
+  --bg-radial: radial-gradient(circle at 50% 35%, #181d26 0%, #0d1015 55%, #040507 100%);
+  --casing-outer: linear-gradient(135deg, #2b2020 0%, #b87a6c 25%, #2a1b18 50%, #e29b8c 75%, #1c100e 100%);
+  --casing-bevel: linear-gradient(135deg, #f2aca0 0%, #683a32 40%, #ffc0b3 70%, #46201a 100%);
+  --casing-shadow: 0 35px 85px rgba(0, 0, 0, 0.95), 0 15px 35px rgba(0, 0, 0, 0.8), inset 0 2px 6px rgba(255, 180, 160, 0.3);
+  --screw-head: linear-gradient(135deg, #ffc4b8 0%, #7d3f33 100%);
+
+  --dial-center: #1a1e26;
+  --dial-mid: #12151b;
+  --dial-edge: #0c0d12;
+  --dial-border: #3b2825;
+  --parchment-deep: #141720;
+  --subdial-bg: rgba(20, 24, 32, 0.92);
+  --guilloche-color: rgba(210, 140, 120, 0.08);
+
+  --ink-color: #f0d5ce;
+  --ink-faded: #aa857c;
+  --steel-hand: #f5b3a4;
+  --steel-hand-highlight: #ffd0c7;
+  --second-hand-color: #df4444;
+  --brass-border: #8f5347;
+  --brass-bevel: #c67868;
+
+  --plaque-bg: linear-gradient(145deg, #201716 0%, #4a2f2b 30%, #1a1211 60%, #5d3b36 100%);
+  --plaque-border: #a46457;
+  --plaque-text: #fae4df;
+  --card-bg: rgba(15, 17, 23, 0.9);
+  --card-border: rgba(184, 122, 108, 0.35);
+  --accent-gold: #f0a697;
+  --accent-glow: rgba(240, 166, 151, 0.25);
+  --text-main: #faeae6;
+  --text-muted: #9c847e;
+}
+
+/* Theme 3: Victorian Walnut & Gilt Enamel */
+[data-theme="walnut"] {
+  --bg-primary: #120905;
+  --bg-radial: radial-gradient(circle at 50% 35%, #34190c 0%, #1b0c05 55%, #080301 100%);
+  --casing-outer: linear-gradient(135deg, #2a1408 0%, #6e3a19 25%, #230f06 50%, #7d441e 75%, #180903 100%);
+  --casing-bevel: linear-gradient(135deg, #e3ba68 0%, #835b21 40%, #ffd47a 70%, #543710 100%);
+  --casing-shadow: 0 40px 90px rgba(0, 0, 0, 0.9), 0 15px 35px rgba(0, 0, 0, 0.7);
+  --screw-head: linear-gradient(135deg, #ffe099 0%, #82581d 100%);
+
+  --dial-center: #fff9ea;
+  --dial-mid: #f6ecce;
+  --dial-edge: #ebd9ab;
+  --dial-border: #b89355;
+  --parchment-deep: #eee0bf;
+  --subdial-bg: rgba(247, 238, 214, 0.95);
+  --guilloche-color: rgba(120, 80, 40, 0.1);
+
+  --ink-color: #1a0f07;
+  --ink-faded: #543922;
+  --steel-hand: #946f2c;
+  --steel-hand-highlight: #d1a54f;
+  --second-hand-color: #1d3a66;
+  --brass-border: #996f2a;
+  --brass-bevel: #cfa14b;
+
+  --plaque-bg: linear-gradient(145deg, #361a0d 0%, #663b1e 30%, #291208 60%, #734322 100%);
+  --plaque-border: #b88640;
+  --plaque-text: #fff3d6;
+  --card-bg: rgba(28, 14, 7, 0.88);
+  --card-border: rgba(184, 134, 64, 0.4);
+  --accent-gold: #f0c36b;
+  --accent-glow: rgba(240, 195, 107, 0.25);
+  --text-main: #faecd0;
+  --text-muted: #a68c74;
+}
+
+/* Theme 4: Antiquated Marine Verdigris Bronze */
+[data-theme="patina"] {
+  --bg-primary: #070e0d;
+  --bg-radial: radial-gradient(circle at 50% 35%, #132420 0%, #0a1513 55%, #030807 100%);
+  --casing-outer: linear-gradient(135deg, #1c3d36 0%, #4a8779 25%, #18332c 50%, #5ca191 75%, #102621 100%);
+  --casing-bevel: linear-gradient(135deg, #78c0b0 0%, #2f6155 40%, #a2dfd1 70%, #1f453c 100%);
+  --casing-shadow: 0 35px 85px rgba(0, 0, 0, 0.9), 0 15px 30px rgba(0, 0, 0, 0.7);
+  --screw-head: linear-gradient(135deg, #a7e7d9 0%, #2d6b5f 100%);
+
+  --dial-center: #e8ede8;
+  --dial-mid: #d6e0d9;
+  --dial-edge: #b9cdc0;
+  --dial-border: #4d7a6e;
+  --parchment-deep: #cbd8cf;
+  --subdial-bg: rgba(218, 230, 222, 0.92);
+  --guilloche-color: rgba(40, 90, 80, 0.12);
+
+  --ink-color: #0c1a17;
+  --ink-faded: #284741;
+  --steel-hand: #1e3845;
+  --steel-hand-highlight: #3b687f;
+  --second-hand-color: #b84333;
+  --brass-border: #3d6e62;
+  --brass-bevel: #559183;
+
+  --plaque-bg: linear-gradient(145deg, #132a25 0%, #274e44 30%, #10241f 60%, #305e52 100%);
+  --plaque-border: #529485;
+  --plaque-text: #e2f4ee;
+  --card-bg: rgba(11, 23, 20, 0.88);
+  --card-border: rgba(82, 148, 133, 0.35);
+  --accent-gold: #6bc2af;
+  --accent-glow: rgba(107, 194, 175, 0.25);
+  --text-main: #e8f5f1;
+  --text-muted: #799e95;
+}
+
+/* --------------------------------------------------------------------------
+   Global Layout & Ambient Background
+   -------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  background-image: var(--bg-radial);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+  transition: background-color 0.6s ease, color 0.6s ease;
+}
+
+/* Ambient Subtle Vignette & Light Gleam */
+.ambient-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(0, 0, 0, 0.85) 100%);
+  z-index: 99;
+}
+
+.light-gleam {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  opacity: 0.55;
+  transition: opacity 0.3s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Header & Crest
+   -------------------------------------------------------------------------- */
+.horology-header {
+  position: relative;
+  z-index: 10;
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid rgba(226, 183, 99, 0.15);
+  background: rgba(10, 6, 4, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.header-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.vintage-crest {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.vintage-crest .crest-icon {
+  color: var(--accent-gold);
+  margin-bottom: 0.1rem;
+}
+
+.crest-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--accent-gold);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.crest-subtitle {
+  font-family: var(--font-serif);
+  font-size: 0.68rem;
+  letter-spacing: 0.28em;
+  color: var(--text-muted);
+}
+
+.header-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.95rem;
+  background: rgba(30, 20, 12, 0.7);
+  border: 1px solid var(--card-border);
+  border-radius: 9999px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.pulse-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #38ef7d;
+  box-shadow: 0 0 10px #38ef7d;
+  animation: pulseBeat 1.8s infinite ease-in-out;
+}
+
+@keyframes pulseBeat {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.35); opacity: 0.4; }
+}
+
+.badge-text {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--text-main);
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--accent-gold);
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--font-serif);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  transition: var(--transition-smooth);
+}
+
+.icon-btn:hover {
+  background: rgba(226, 183, 99, 0.18);
+  border-color: var(--accent-gold);
+  transform: translateY(-1px);
+}
+
+.btn-svg {
+  width: 17px;
+  height: 17px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Master Showcase Stage Layout
+   -------------------------------------------------------------------------- */
+.horology-stage {
+  flex: 1;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  display: grid;
+  grid-template-columns: minmax(360px, 640px) minmax(360px, 1fr);
+  gap: 3.5rem;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 5;
+}
+
+@media (max-width: 1024px) {
+  .horology-stage {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 1.5rem 1rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Clock Viewport & 3D Tilt Mechanics
+   -------------------------------------------------------------------------- */
+.clock-stage-viewport {
+  perspective: 1400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  user-select: none;
+}
+
+/* Antique Pocket Watch Bow / Winding Loop at Top */
+.watch-top-crown-assembly {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: -18px;
+  z-index: 3;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.watch-top-crown-assembly:hover {
+  transform: translateY(-2px);
+}
+
+.watch-top-crown-assembly:active {
+  transform: translateY(1px);
+}
+
+.watch-bow-loop {
+  width: 76px;
+  height: 48px;
+  border: 7px solid #d4a654;
+  border-bottom: none;
+  border-radius: 48px 48px 0 0;
+  background: transparent;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(255, 235, 175, 0.4);
+  position: relative;
+}
+
+.watch-winding-crown {
+  width: 44px;
+  height: 24px;
+  background: var(--casing-bevel);
+  border-radius: 5px;
+  border: 1px solid rgba(70, 44, 14, 0.7);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7), inset 0 1px 3px rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.crown-fluting {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, transparent 0, transparent 3px, rgba(0, 0, 0, 0.4) 3px, rgba(0, 0, 0, 0.4) 5px);
+}
+
+.crown-jewel {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff8ea6, #bd1438 70%, #580616 100%);
+  box-shadow: 0 0 5px rgba(189, 20, 56, 0.6);
+  z-index: 2;
+}
+
+/* Master Casing Instrument */
+.clock-casing {
+  width: min(580px, 92vw);
+  height: min(580px, 92vw);
+  aspect-ratio: 1 / 1;
+  position: relative;
+  border-radius: 50%;
+  background: var(--casing-outer);
+  padding: 24px;
+  box-shadow: var(--casing-shadow);
+  transition: transform 0.15s cubic-bezier(0.1, 0.5, 0.1, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Outer Rim with Screws */
+.bezel-outer-rim {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.bezel-screw {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--screw-head);
+  border: 1px solid rgba(50, 30, 10, 0.8);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7), inset 0 1px 2px rgba(255, 240, 200, 0.5);
+}
+
+.bezel-screw::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  right: 2px;
+  height: 2px;
+  background: #25170b;
+  transform: translateY(-50%) rotate(45deg);
+  border-radius: 1px;
+}
+
+.b-top { top: 6px; left: 50%; transform: translateX(-50%); }
+.b-right { top: 50%; right: 6px; transform: translateY(-50%); }
+.b-bottom { bottom: 6px; left: 50%; transform: translateX(-50%); }
+.b-left { top: 50%; left: 6px; transform: translateY(-50%); }
+
+.bezel-inner-flange {
+  position: absolute;
+  inset: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 235, 175, 0.4);
+  box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.8), 0 2px 4px rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+}
+
+/* Clock Dial Faceplate */
+.clock-dial {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, var(--dial-center) 0%, var(--dial-mid) 60%, var(--dial-edge) 88%, var(--dial-border) 100%);
+  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.45), inset 0 8px 18px rgba(0, 0, 0, 0.5);
+}
+
+/* Guilloché Canvas Layer */
+.dial-guilloche-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+/* Dial SVG Layer */
+.dial-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+}
+
+/* Dial Typography & Markings */
+.brand-title {
+  font-family: var(--font-display);
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  fill: var(--ink-color);
+}
+
+.brand-sub {
+  font-family: var(--font-serif);
+  font-size: 7.2px;
+  letter-spacing: 0.3em;
+  fill: var(--ink-faded);
+  font-weight: 600;
+}
+
+.brand-origin {
+  font-family: var(--font-serif);
+  font-size: 6.8px;
+  letter-spacing: 0.22em;
+  fill: var(--brass-border);
+  font-weight: 600;
+}
+
+.brand-guarantee {
+  font-family: var(--font-serif);
+  font-size: 6.5px;
+  letter-spacing: 0.26em;
+  fill: var(--ink-faded);
+  font-weight: 600;
+}
+
+.brand-precision {
+  font-family: var(--font-serif);
+  font-size: 6px;
+  letter-spacing: 0.32em;
+  fill: var(--brass-border);
+}
+
+.numeral-text {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 700;
+  fill: var(--ink-color);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.subdial-label {
+  font-family: var(--font-serif);
+  font-size: 6.5px;
+  letter-spacing: 0.2em;
+  fill: var(--ink-faded);
+  font-weight: 600;
+}
+
+.subdial-label.micro {
+  font-size: 5.5px;
+  letter-spacing: 0.12em;
+}
+
+.subdial-label.tiny {
+  font-size: 4.8px;
+  fill: var(--brass-border);
+}
+
+.date-text {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 700;
+  fill: var(--ink-color);
+  dominant-baseline: central;
+  letter-spacing: 0.05em;
+}
+
+/* Hands and Assemblies */
+.hand-group {
+  transform-origin: 300px 300px;
+  will-change: transform;
+}
+
+.balance-wheel {
+  transform-origin: 0px 0px;
+  will-change: transform;
+}
+
+.celestial-disc {
+  transform-origin: 0px 0px;
+  will-change: transform;
+  transition: transform 0.8s ease-out;
+}
+
+/* Domed Sapphire Crystal Glass Highlights */
+.glass-lens {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.glass-reflection-rim {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 2px 10px rgba(255, 255, 255, 0.4), inset 0 -4px 12px rgba(0, 0, 0, 0.45);
+}
+
+.glass-glare-sweep {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0.08) 25%,
+    transparent 45%,
+    rgba(255, 255, 255, 0.05) 55%,
+    transparent 70%
+  );
+  transform: rotate(-25deg);
+  opacity: 0.75;
+  transition: transform 0.2s cubic-bezier(0.1, 0.5, 0.1, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Horological Dashboard & Engraved Brass Plaque
+   -------------------------------------------------------------------------- */
+.horology-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  position: relative;
+  z-index: 5;
+}
+
+/* Engraved Brass Plaque */
+.brass-plaque {
+  position: relative;
+  background: var(--plaque-bg);
+  border: 2px solid var(--plaque-border);
+  border-radius: 12px;
+  padding: 1.75rem 2rem;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75), inset 0 2px 4px rgba(255, 240, 190, 0.4), inset 0 -2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.plaque-rivet {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--screw-head);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.plaque-rivet::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  right: 2px;
+  height: 1.5px;
+  background: #331f0e;
+  transform: translateY(-50%) rotate(40deg);
+}
+
+.p-tl { top: 8px; left: 8px; }
+.p-tr { top: 8px; right: 8px; }
+.p-bl { bottom: 8px; left: 8px; }
+.p-br { bottom: 8px; right: 8px; }
+
+.plaque-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.plaque-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.plaque-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--plaque-border), transparent);
+}
+
+.plaque-title {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--plaque-text);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  text-align: center;
+}
+
+/* Digital Time Readout */
+.digital-verification {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(12, 7, 4, 0.7);
+  border: 1px solid rgba(226, 183, 99, 0.35);
+  border-radius: 8px;
+  padding: 1.15rem;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.85);
+}
+
+.time-readout-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.time-main {
+  font-family: var(--font-mono);
+  font-size: 2.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--accent-gold);
+  text-shadow: 0 0 15px rgba(226, 183, 99, 0.45);
+}
+
+.time-millis {
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  color: #f7d88c;
+  opacity: 0.85;
+}
+
+.time-ampm {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-left: 0.4rem;
+}
+
+.date-readout-wrap {
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  letter-spacing: 0.25em;
+  color: var(--text-main);
+  margin-top: 0.35rem;
+}
+
+/* Telemetry Grid */
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+@media (max-width: 480px) {
+  .telemetry-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.telemetry-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  background: rgba(22, 14, 8, 0.55);
+  border: 1px solid rgba(226, 183, 99, 0.2);
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+}
+
+.tele-label {
+  font-family: var(--font-serif);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+}
+
+.tele-val {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --------------------------------------------------------------------------
+   Master Control Console
+   -------------------------------------------------------------------------- */
+.control-console {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.control-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.label-title {
+  font-family: var(--font-serif);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--accent-gold);
+}
+
+.label-desc {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Vintage Select Box */
+.custom-select-wrap {
+  position: relative;
+}
+
+.custom-select-wrap::after {
+  content: '▼';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.6rem;
+  color: var(--accent-gold);
+  pointer-events: none;
+}
+
+.vintage-select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(14, 9, 6, 0.9);
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+  padding: 0.7rem 2.2rem 0.7rem 1rem;
+  border-radius: 6px;
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.vintage-select:hover, .vintage-select:focus {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.vintage-select option {
+  background: #19100a;
+  color: #eeddc2;
+  font-family: var(--font-serif);
+}
+
+/* Theme Button Group */
+.theme-button-group {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+}
+
+@media (max-width: 480px) {
+  .theme-button-group {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.theme-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.65rem 0.5rem;
+  background: rgba(16, 10, 6, 0.85);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  color: var(--text-main);
+  font-family: var(--font-serif);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.theme-btn:hover {
+  border-color: var(--accent-gold);
+  transform: translateY(-1px);
+}
+
+.theme-btn.active {
+  background: rgba(226, 183, 99, 0.16);
+  border-color: var(--accent-gold);
+  box-shadow: inset 0 1px 3px rgba(226, 183, 99, 0.3), 0 0 10px var(--accent-glow);
+  font-weight: 700;
+}
+
+.theme-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.brass-dot { background: linear-gradient(135deg, #f5d688, #9a7126); }
+.obsidian-dot { background: linear-gradient(135deg, #444, #0f1218); }
+.walnut-dot { background: linear-gradient(135deg, #8d4e24, #361708); }
+.patina-dot { background: linear-gradient(135deg, #6ecab5, #22574c); }
+
+/* Acoustic Controls & Sliders */
+.acoustic-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  background: rgba(14, 9, 6, 0.6);
+  border: 1px solid rgba(226, 183, 99, 0.18);
+  border-radius: 6px;
+  padding: 0.85rem 1rem;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.slider-name {
+  font-family: var(--font-serif);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  min-width: 85px;
+}
+
+.vintage-slider {
+  flex: 1;
+  height: 5px;
+  -webkit-appearance: none;
+  background: #332014;
+  border-radius: 4px;
+  outline: none;
+}
+
+.vintage-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--casing-bevel);
+  border: 1px solid #4a2c0d;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+.slider-val {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent-gold);
+  min-width: 35px;
+  text-align: right;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.vintage-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.vintage-checkbox-label input {
+  display: none;
+}
+
+.custom-checkbox {
+  width: 17px;
+  height: 17px;
+  border-radius: 4px;
+  border: 1px solid var(--card-border);
+  background: rgba(14, 9, 6, 0.9);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.vintage-checkbox-label input:checked + .custom-checkbox {
+  background: var(--accent-gold);
+  border-color: #ffd787;
+}
+
+.vintage-checkbox-label input:checked + .custom-checkbox::after {
+  content: '✓';
+  color: #21160d;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.checkbox-text {
+  font-family: var(--font-serif);
+  font-size: 0.74rem;
+  color: var(--text-main);
+  letter-spacing: 0.05em;
+}
+
+.chime-test-btn {
+  padding: 0.35rem 0.75rem;
+  background: rgba(226, 183, 99, 0.12);
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  color: var(--accent-gold);
+  font-family: var(--font-serif);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.chime-test-btn:hover {
+  background: rgba(226, 183, 99, 0.25);
+  border-color: var(--accent-gold);
+}
+
+/* Master Action Buttons */
+.control-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 480px) {
+  .control-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0.8rem;
+  border-radius: 6px;
+  font-family: var(--font-serif);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  outline: none;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, #a77c38 0%, #d8ae5e 50%, #835a22 100%);
+  border: 1px solid #ffd787;
+  color: #1a0f05;
+}
+
+.action-btn.primary:hover {
+  box-shadow: 0 6px 18px rgba(226, 183, 99, 0.4);
+  transform: translateY(-1px);
+}
+
+.action-btn.secondary {
+  background: rgba(30, 20, 12, 0.9);
+  border: 1px solid var(--card-border);
+  color: var(--text-main);
+}
+
+.action-btn.secondary:hover {
+  background: rgba(45, 30, 18, 0.95);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  transform: translateY(-1px);
+}
+
+.action-btn.tertiary {
+  background: rgba(18, 12, 8, 0.85);
+  border: 1px solid var(--card-border);
+  color: var(--text-muted);
+}
+
+.action-btn.tertiary:hover {
+  border-color: var(--accent-gold);
+  color: var(--text-main);
+  transform: translateY(-1px);
+}
+
+.action-svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* --------------------------------------------------------------------------
+   Footer Specifications
+   -------------------------------------------------------------------------- */
+.horology-footer {
+  position: relative;
+  z-index: 10;
+  padding: 1.5rem 2rem;
+  border-top: 1px solid rgba(226, 183, 99, 0.15);
+  background: rgba(10, 6, 4, 0.8);
+  text-align: center;
+}
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.specs-text {
+  font-family: var(--font-serif);
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
+  color: var(--accent-gold);
+  opacity: 0.9;
+}
+
+.copyright-text {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
